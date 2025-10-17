@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>R|</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#0f0c29; --bg2:#302b63; --bg3:#24243e;
+      --primary:#8AEEFF; --accent:#FF6EC7;
+      --card:#11131acc; --muted:#c9d1d9; --muted-2:#9aa4b2;
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:"Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif; color:#fff;
+      background: linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+      background-size:300% 300%; animation: grad 18s ease infinite;
+      display:grid; place-items:start center; padding: 20px;
+    }
+    @keyframes grad{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
+
+    /* CONTENEDOR PRINCIPAL */
+    .shell{
+      width: min(1200px, 100%);
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+      overflow: hidden;
+    }
+
+    header{padding: 24px 22px 10px}
+    .badge{
+      display:inline-flex; align-items:center; gap:.5rem; font-size:.78rem; letter-spacing:.04em;
+      color:#0a0c10; background: linear-gradient(90deg,var(--primary),#67d9ff);
+      padding:.35rem .6rem; border-radius:999px; font-weight:700; text-transform:uppercase
+    }
+    h1{margin:12px 0 2px; font-size: clamp(1.6rem, 2.2vw + .8rem, 2.4rem); line-height:1.15; font-weight:800}
+    h1 span{background: linear-gradient(90deg, var(--primary), var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent}
+    .subtitle{color:var(--muted); margin:0 0 10px}
+
+    /* LAYOUT RESPONSIVO: FILA/2 COLS */
+    .content{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      padding: 0 22px 22px;
+    }
+    @media (min-width: 900px){
+      .content{ grid-template-columns: 1fr 1.4fr; }
+    }
+
+    .card{
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: calc(var(--radius) - 6px);
+      padding: 18px;
+      backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    /* FORM */
+    label{display:block; color:var(--muted); margin-bottom:8px; font-size:.95rem}
+    .input-wrap{position:relative}
+    input[type="text"]{
+      width:100%; padding: 14px 14px 14px 44px; font-size:1rem; color:#e6edf3;
+      background: rgba(10,12,16,.6); border:1px solid rgba(255,255,255,.12); border-radius:14px; outline:none;
+      transition: border-color .15s ease, box-shadow .15s ease, transform .06s ease;
+    }
+    input[type="text"]:focus{border-color:var(--primary); box-shadow: 0 0 0 4px rgba(138,238,255,.25); transform: translateY(-1px)}
+    .input-icon{position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.8}
+    .hint{margin-top:8px; color:var(--muted-2); font-size:.85rem}
+
+    .actions{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap}
+    .btn{appearance:none; border:none; cursor:pointer; padding:12px 16px; border-radius:14px; font-weight:700; letter-spacing:.2px}
+    .btn-primary{color:#0a0c10; background: linear-gradient(90deg, var(--accent), #ff9adf); box-shadow: 0 10px 24px rgba(255,110,199,.28)}
+    .btn-ghost{color:var(--muted); background:transparent; border:1px solid rgba(255,255,255,.14)}
+    .btn-primary:hover{transform: translateY(-1px) scale(1.01)}
+    .btn-ghost:hover{border-color: rgba(255,255,255,.24); color:#fff}
+    /* Botones 100% en pantallas pequeñas */
+    @media (max-width: 480px){
+      .actions .btn{width:100%}
+    }
+
+    .title-row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px}
+    .title-row h2{margin:0; font-size:1.05rem; letter-spacing:.2px}
+    .pill{
+      font-size:.78rem; padding:6px 10px; border-radius:999px;
+      background: rgba(138,238,255,.12); border:1px solid rgba(138,238,255,.35); color:var(--primary); font-weight:700
+    }
+
+    /* LISTA COMO GRID AUTO-AJUSTABLE */
+    ul.recs{list-style:none; margin:0; padding:0; display:grid; gap:12px}
+    /* 1 col en móvil, 2 en tablet, 3–4 según ancho en desktop */
+    @media (min-width: 520px){
+      ul.recs{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 900px){
+      ul.recs{ grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+    }
+
+    .song{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:14px; background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08); border-radius:12px; min-width:0;
+    }
+    .song .name{font-weight:800; line-height:1.2; word-break: break-word; overflow-wrap:anywhere}
+    .song .meta{color:var(--muted); font-size:.92rem; margin-top:2px; word-break: break-word; overflow-wrap:anywhere}
+    .pop{white-space:nowrap}
+
+    footer{padding: 10px 22px 22px; text-align:center; color:var(--muted-2); font-size:.86rem}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <span class="badge">🎧 Recomendador Híbrido</span>
+      <h1>Descubre música con <span>IA</span></h1>
+      <p class="subtitle">Curso de Inteligencia Artificial — Explorador</p>
+    </header>
+
+    <section class="content">
+      <!-- FORMULARIO -->
+      <div class="card">
+        <form method="post" novalidate>
+          <label for="favorites">Ingresa índices de tus canciones favoritas (separados por comas):</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔎</span>
+            <input id="favorites" type="text" name="favorites" size="50" inputmode="numeric" placeholder="Ejemplo: 10, 100, 500" aria-describedby="hint">
+          </div>
+          <div id="hint" class="hint">Consejo: usa índices válidos del dataset (p. ej., 0–9999).</div>
+          <div class="actions">
+            <button class="btn btn-primary" type="submit">Obtener Recomendaciones 🚀</button>
+            <button class="btn btn-ghost" type="reset">Limpiar</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- RESULTADOS -->
+      <div class="card">
+        <div class="title-row">
+          <h2>Recomendaciones</h2>
+          <span class="pill">Actualizado</span>
+        </div>
+
+        {% if recommendations %}
+          <ul class="recs">
+            {% for song in recommendations %}
+              <li class="song">
+                <div style="min-width:0">
+                  <div class="name">{{ song.name }}</div>
+                  <div class="meta">{{ song.artists }}</div>
+                </div>
+                <span class="pill pop">Popularidad: {{ song.popularity }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="hint">No hay recomendaciones aún. ¡Ingresa tus canciones favoritas y presiona “Obtener Recomendaciones”! ✨</p>
+        {% endif %}
+      </div>
+    </section>
+
+    <footer>Hecho con 💜 para amantes de la música</footer>
+  </main>
+</body>
+</html>
